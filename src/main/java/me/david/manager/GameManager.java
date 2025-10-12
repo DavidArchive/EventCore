@@ -2,6 +2,10 @@ package me.david.manager;
 
 import lombok.Getter;
 import me.david.EventCore;
+import me.david.api.events.game.GameStartEvent;
+import me.david.api.events.game.GameStopEvent;
+import me.david.api.events.game.GameTimerTickEvent;
+import me.david.api.events.game.InGameTimerTickEvent;
 import me.david.util.BorderUtil;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;
@@ -26,6 +30,7 @@ public class GameManager {
     private long inGameTimer;
     private boolean autoDropped = false;
 
+    @SuppressWarnings("deprecation")
     public void start() {
         stopAllTimers();
         if (timerRunning) return;
@@ -36,10 +41,21 @@ public class GameManager {
 
         timer = new AtomicInteger(EventCore.getInstance().getConfig().getInt("Messages.StartTimer.Timer", 5));
 
+        GameStartEvent gameStartEvent = new GameStartEvent(timer.get());
+        Bukkit.getPluginManager().callEvent(gameStartEvent);
+
+        if (gameStartEvent.isCancelled()) {
+            timerRunning = false;
+            return;
+        }
+
         startTask = Scheduler.timer(() -> {
             if (!timerRunning || running) return;
 
             int current = timer.get();
+
+            Bukkit.getPluginManager().callEvent(new GameTimerTickEvent(current));
+
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (current > 0) {
                     String color = MessageUtil.get("Messages.StartTimer.Colors." + current + "sec");
@@ -98,7 +114,7 @@ public class GameManager {
                                     .filter(player -> player.getGameMode() == GameMode.SURVIVAL)
                                     .findFirst()
                                     .map(Player::getName)
-                                    .orElse("Unbekannt")
+                                    .orElse("Unknown")
                     ));
                 }
             }, 0, 20);
@@ -114,7 +130,15 @@ public class GameManager {
         }
     }
 
-    public void stop(String winner) {
+    @SuppressWarnings("deprecation")
+    public void stop(final String winner) {
+        GameStopEvent gameStopEvent = new GameStopEvent(winner);
+        Bukkit.getPluginManager().callEvent(gameStopEvent);
+
+        if (gameStopEvent.isCancelled()) {
+            return;
+        }
+
         running = false;
         timerRunning = false;
         BorderUtil.lastOptimal = 200;
@@ -158,6 +182,8 @@ public class GameManager {
 
         timerTask = Scheduler.timer(() -> {
             inGameTimer++;
+
+            Bukkit.getPluginManager().callEvent(new InGameTimerTickEvent(inGameTimer));
 
             String message = MessageUtil.get("Settings.IngameTimer.Format")
                     .replaceAll("hh", String.format("%02d", (inGameTimer / 3600)))

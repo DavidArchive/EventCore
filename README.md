@@ -7,26 +7,87 @@
 
 <hr>
 
-### Installation
+## Installation
 1. Download jar from [here](https://github.com/VertrauterDavid/EventCore/releases/latest)
 2. Put the jar in your plugins folder
 3. Restart your server (not reload)
 
-### Update
+## Update
 1. Download the new jar from [here](https://github.com/VertrauterDavid/EventCore/releases/latest)
 2. Replace the old jar with the new one
 3. Delete the old `config.yml` and restart your server
 
 <hr>
 
-### Future updates
+## Future updates
 - Possibility to create teams (for tournaments or similar)
-- Possibility to host events directly on a survival server but still get a event kit
 - Integrated fast world reset system
-- Integrated scoreboard system to minimize plugins on the server
 - Placeholder Support in Messages
 
-<hr>
+---
+
+## API Usage
+
+### Example Listener
+
+Here is an example of how to process a custom `KitGiveEvent`:
+
+```java
+@EventHandler
+public void onKitGiven(final KitGiveEvent event) {
+    final Player player = event.getPlayer();
+    final String kit = event.getKitName();
+
+    if (player == null || kit == null) {
+        Logger.getAnonymousLogger().warning("Kit name or Player is equal to null");
+        return;
+    }
+
+    if (kit.equalsIgnoreCase("default")) {
+        Logger.getAnonymousLogger().warning("The kit name is equal to default");
+        return;
+    }
+
+    final String broadcastMessage = "%player% has been given the %kit% kit!"
+            .replace("%player%", player.getName())
+            .replace("%kit%", kit);
+
+    Bukkit.broadcast(Component.text(broadcastMessage).color(NamedTextColor.GREEN));
+}
+```
+
+---
+
+## API Access
+
+The main class `EventCoreAPI` provides the central access to essential managers and functions.
+
+### Accessing the API Instance
+
+Before using the API, ensure it is initialized:
+
+```java
+EventCoreAPI.initialize(plugin);
+```
+
+To retrieve the API instance, use:
+
+```java
+EventCoreAPI api = EventCoreAPI.get();
+```
+
+### Available Components
+
+- **GameManager**  
+  Access to game management functionality.
+
+- **KitManager**  
+  Manage kits (e.g., saving, loading, deleting).
+
+- **MapManager**  
+  Manage maps and map-related functions.
+
+---
 
 <details>
     <summary><h3 style="display: inline;">Commands</h3></summary>
@@ -82,5 +143,3 @@
 | `%eventcore_border%` | Current border size of the world the player is on | 30      |
 | `%eventcore_ping%`   | Ping of the player                                | 18ms    |
 | `%eventcore_tps%`    | Server TPS (via [Spark](https://spark.lucko.me/)) | 20.00   |
-
-</details>

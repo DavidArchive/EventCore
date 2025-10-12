@@ -1,5 +1,6 @@
 package me.david.util;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import lombok.Getter;
 import me.david.EventCore;
 import org.bukkit.Bukkit;
@@ -91,6 +92,7 @@ public class Scheduler {
         }
     }
 
+    @CanIgnoreReturnValue
     public static TaskWrapper wait(Runnable runnable, long delay) {
         long safeDelay = Math.max(delay, 1);
 
@@ -103,6 +105,7 @@ public class Scheduler {
         }
     }
 
+    @CanIgnoreReturnValue
     public static TaskWrapper timer(Runnable runnable, long delay, long period) {
         long safeDelay = Math.max(delay, 1);
         long safePeriod = Math.max(period, 1);
@@ -116,6 +119,7 @@ public class Scheduler {
         }
     }
 
+    @CanIgnoreReturnValue
     public static TaskWrapper timerAsync(Runnable runnable, long delay, long period) {
         long safeDelay = Math.max(delay, 1);
         long safePeriod = Math.max(period, 1);

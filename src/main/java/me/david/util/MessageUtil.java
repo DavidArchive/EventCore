@@ -1,8 +1,8 @@
 package me.david.util;
 
 import lombok.experimental.UtilityClass;
-import net.md_5.bungee.api.ChatColor;
 import me.david.EventCore;
+import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;

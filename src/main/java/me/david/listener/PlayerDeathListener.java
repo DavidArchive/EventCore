@@ -1,9 +1,9 @@
 package me.david.listener;
 
-import net.kyori.adventure.text.Component;
 import me.david.EventCore;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

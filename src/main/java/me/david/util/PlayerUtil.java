@@ -20,6 +20,7 @@ public class PlayerUtil {
         return Bukkit.getOnlinePlayers().size();
     }
 
+    @SuppressWarnings("deprecation")
     public static void cleanPlayer(@NotNull Player player) {
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(player.getMaxHealth());

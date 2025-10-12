@@ -6,15 +6,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
-public class PlaceholderHook extends PlaceholderExpansion {
+public final class PlaceholderHook extends PlaceholderExpansion {
+
+    private static final DecimalFormat KD_FORMAT = new DecimalFormat("#0.00");
 
     @Override
     public @NotNull String getIdentifier() {
@@ -28,7 +30,7 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "2.0";
+        return "2.1";
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PlaceholderHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull List<String> getPlaceholders() {
-        return Arrays.asList(
+        return List.of(
                 "total",
                 "alive",
                 "kills",
@@ -52,60 +54,41 @@ public class PlaceholderHook extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
+    public @NotNull String onPlaceholderRequest(final Player player, final @NotNull String params) {
         if (player == null) return "";
 
-        if (params.equals("total")) {
-            return String.valueOf(PlayerUtil.getTotal());
-        }
-
-        if (params.equals("alive")) {
-            return String.valueOf(PlayerUtil.getAlive());
-        }
-
-        if (params.equals("kills")) {
-            return String.valueOf(player.getStatistic(Statistic.PLAYER_KILLS));
-        }
-
-        if (params.equals("deaths")) {
-            return String.valueOf(player.getStatistic(Statistic.DEATHS));
-        }
-
-        if (params.equals("kd")) {
-            double kills = player.getStatistic(Statistic.PLAYER_KILLS);
-            double deaths = player.getStatistic(Statistic.DEATHS);
-            return new DecimalFormat("#0.00").format(Math.max(0D, (deaths == 0 ? kills : (kills / deaths))));
-        }
-
-        if (params.equals("totems")) {
-            int count = 0;
-            for (ItemStack itemStack : player.getInventory().getContents()) {
-                if (itemStack != null) {
-                    if (itemStack.getType() == Material.TOTEM_OF_UNDYING) {
-                        count++;
-                    }
-                }
-            }
-            return String.valueOf(count);
-        }
-
-        if (params.equals("border")) {
-            return String.valueOf((int) (player.getWorld().getWorldBorder().getSize() / 2));
-        }
-
-        if (params.equals("ping")) {
-            if (player.isOnline()) {
-                return String.valueOf((int) (player.getPing() * 0.8));
-            } else {
-                return "0";
-            }
-        }
-
-        if (params.equals("tps")) {
-            return ChatColor.stripColor(PlaceholderAPI.setPlaceholders(null, "%spark_tps_5m%").replaceAll("\\*", "").split("\\.")[0]);
-        }
-
-        return "";
+        // I'm personally not a huge fan of switch & case, but in this case, it looks way better </3
+        return switch (params) {
+            case "total" -> String.valueOf(PlayerUtil.getTotal());
+            case "alive" -> String.valueOf(PlayerUtil.getAlive());
+            case "kills" -> String.valueOf(player.getStatistic(Statistic.PLAYER_KILLS));
+            case "deaths" -> String.valueOf(player.getStatistic(Statistic.DEATHS));
+            case "kd" -> formatKD(player);
+            case "totems" -> String.valueOf(countTotems(player));
+            case "border" -> String.valueOf((int) (player.getWorld().getWorldBorder().getSize() / 2));
+            case "ping" -> String.valueOf(player.isOnline() ? (int) (player.getPing() * 0.8) : 0);
+            case "tps" -> formatTPS();
+            default -> "";
+        };
     }
 
+    @Contract(pure = true)
+    private static @NotNull String formatKD(final @NotNull Player player) {
+        final double kills = player.getStatistic(Statistic.PLAYER_KILLS);
+        final double deaths = player.getStatistic(Statistic.DEATHS);
+        final double ratio = deaths == 0 ? kills : kills / deaths;
+        return KD_FORMAT.format(Math.max(0, ratio));
+    }
+
+    private static int countTotems(final @NotNull Player player) {
+        return (int) Stream.of(player.getInventory().getContents()).filter(Objects::nonNull)
+                .filter(item -> item.getType() == Material.TOTEM_OF_UNDYING)
+                .count();
+    }
+
+    @SuppressWarnings("deprecation")
+    private static @NotNull String formatTPS() {
+        final String raw = PlaceholderAPI.setPlaceholders(null, "%spark_tps_5m%");
+        return ChatColor.stripColor(raw.replace("*", "").split("\\.")[0]);
+    }
 }

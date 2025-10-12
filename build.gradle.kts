@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.david"
-version = "2.0"
+version = "2.1"
 description = "Event Server System with tons of useful commands and features"
 
 repositories {
@@ -15,6 +15,7 @@ repositories {
 
     //PaperMC
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
