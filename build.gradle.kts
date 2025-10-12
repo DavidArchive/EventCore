@@ -21,8 +21,9 @@ repositories {
 dependencies {
     implementation(libs.paper.api)
     compileOnly(libs.lombok)
-    compileOnlyApi(libs.placeholderapi)
     annotationProcessor(libs.lombok)
+    implementation(libs.commandapi)
+    compileOnlyApi(libs.placeholderapi)
 }
 
 tasks {

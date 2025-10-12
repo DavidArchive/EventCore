@@ -1,38 +1,36 @@
 package me.david.command;
 
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.executors.CommandArguments;
 import me.david.EventCore;
 import me.david.util.MessageUtil;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+public class SpawnCommand {
 
-public class SpawnCommand implements CommandExecutor {
+    private final EventCore plugin;
 
-    public SpawnCommand(String name) {
-        Objects.requireNonNull(EventCore.getInstance().getCommand(name)).setExecutor(this);
+    public SpawnCommand(EventCore plugin) {
+        this.plugin = plugin;
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(commandSender instanceof Player player)) return false;
-        if (!(player.hasPermission("event.spawn"))) return false;
+    public CommandAPICommand init() {
+        return new CommandAPICommand("spawn")
+                .withPermission("event.command.spawn")
+                .executesPlayer(this::onCommand);
+    }
 
-        if (EventCore.getInstance().getMapManager().getSpawnLocation() == null) {
+    private void onCommand(Player player, CommandArguments args) {
+        if (plugin.getMapManager().getSpawnLocation() == null) {
             player.sendMessage(MessageUtil.getPrefix() + "§cThere isn’t a spawn location yet. Set one using the command /event setspawn");
-            return false;
+            return;
         }
 
-        if (EventCore.getInstance().getGameManager().isRunning() && !player.hasPermission("event.bypass")) {
+        if (plugin.getGameManager().isRunning() && !player.hasPermission("event.bypass")) {
             player.sendMessage(MessageUtil.getPrefix() + "§cYou cannot teleport to the spawn while the event is running");
-            return false;
+            return;
         }
 
-        player.teleportAsync(EventCore.getInstance().getMapManager().getSpawnLocation());
-        return false;
+        player.teleportAsync(plugin.getMapManager().getSpawnLocation());
     }
-
 }

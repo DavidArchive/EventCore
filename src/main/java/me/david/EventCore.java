@@ -1,5 +1,8 @@
 package me.david;
 
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import dev.jorel.commandapi.CommandAPILogger;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.david.command.*;
@@ -26,6 +29,14 @@ public class EventCore extends JavaPlugin {
     private KitManager kitManager;
 
     @Override
+    public void onLoad() {
+        CommandAPI.setLogger(CommandAPILogger.fromJavaLogger(getLogger()));
+        CommandAPIBukkitConfig config = new CommandAPIBukkitConfig(this);
+        config.setNamespace("eventcore");
+        CommandAPI.onLoad(config);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public void onEnable() {
         saveDefaultConfig();
@@ -35,11 +46,13 @@ public class EventCore extends JavaPlugin {
         gameManager = new GameManager();
         kitManager = new KitManager();
 
-        new AnnoucementCommand("announcement");
-        new EventCommand("event");
-        new KitCommand("kit");
-        new ReviveCommand("revive");
-        new SpawnCommand("spawn");
+        CommandAPI.onEnable();
+
+        new AnnouncementCommand(instance).init().register();
+        new EventCoreCommand(instance);
+        new KitCommand(instance);
+        new ReviveCommand(instance).init().register();
+        new SpawnCommand(instance).init().register();
 
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), instance);
         Bukkit.getPluginManager().registerEvents(new BlockExplodeListener(), instance);
@@ -86,6 +99,8 @@ public class EventCore extends JavaPlugin {
         if (gameManager.isRunning()) {
             gameManager.stop(null);
         }
+
+        CommandAPI.onDisable();
     }
 
 }
