@@ -2,6 +2,7 @@ package me.david.util;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.david.EventCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -29,8 +30,9 @@ public final class PlaceholderHook extends PlaceholderExpansion {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public @NotNull String getVersion() {
-        return "2.1";
+        return EventCore.getInstance().getDescription().getVersion();
     }
 
     @Override

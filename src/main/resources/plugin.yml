@@ -7,28 +7,6 @@ website: https://github.com/DavidArchive/EventCore
 folia-supported: true
 
 softdepend: [PlaceholderAPI]
-depend: [WorldEdit]
+#depend: [WorldEdit]
 
-commands:
-  event:
-    description: "Main command used to manage the features of EventCore."
-    aliases: [eventcore, e]
-    permission: event.command
-
-  announcement:
-    description: "Sends a title message to all online players with the text you provide."
-    permission: event.command
-
-  kit:
-    description: "Command to manage player kits, including creating, saving, giving, and enabling them."
-    aliases: [playerkit]
-    permission: event.command
-
-  revive:
-    description: "Brings a player back to life."
-    aliases: [respawn]
-    permission: event.command
-
-  spawn:
-    description: "Teleports you to the spawn area during the preparation phase."
-    permission: event.spawn
+#perm

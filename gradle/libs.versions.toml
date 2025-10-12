@@ -3,12 +3,14 @@ paper-api = "1.21-R0.1-SNAPSHOT"
 lombok = "1.18.30"
 shadow = "8.3.0"
 placeholderapi = "2.11.6"
+commandapi = "10.1.2"
 run-paper = "2.3.0"
 
 [libraries]
 paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
+commandapi = { group = "dev.jorel", name = "commandapi-bukkit-shade-mojang-mapped", version.ref = "commandapi" }
 
 [plugins]
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

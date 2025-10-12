@@ -12,16 +12,16 @@ import java.util.ArrayList;
 @UtilityClass
 public class PlayerUtil {
 
-    public static int getAlive() {
+    public int getAlive() {
         return Bukkit.getOnlinePlayers().stream().filter(player2 -> player2.getGameMode() == GameMode.SURVIVAL).toList().size();
     }
 
-    public static int getTotal() {
+    public int getTotal() {
         return Bukkit.getOnlinePlayers().size();
     }
 
     @SuppressWarnings("deprecation")
-    public static void cleanPlayer(@NotNull Player player) {
+    public void cleanPlayer(@NotNull Player player) {
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
