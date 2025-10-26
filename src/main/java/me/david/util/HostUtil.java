@@ -30,7 +30,7 @@ public class HostUtil {
 
     public void removeHost(final @NotNull Player player) {
         if (EventCore.getInstance().getConfig().getBoolean("Settings.HostRank.Enabled")) {
-            if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host"))) {
+            if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host")) && isHost(player)) {
                 Scheduler.dispatchCommand(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.QuitCommand").replaceAll("%player%", player.getName()), "event.host")));
             }
             host.remove(player);
