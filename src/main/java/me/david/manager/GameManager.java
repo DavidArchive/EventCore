@@ -172,6 +172,7 @@ public class GameManager {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void startInGameTimer() {
         inGameTimer = 0;
 
@@ -191,7 +192,7 @@ public class GameManager {
                     .replaceAll("ss", String.format("%02d", (inGameTimer % 60)));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(message);
+                player.sendActionBar(message);
             }
         }, 0, 20);
     }
