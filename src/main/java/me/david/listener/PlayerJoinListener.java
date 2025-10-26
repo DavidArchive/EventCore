@@ -1,6 +1,7 @@
 package me.david.listener;
 
 import me.david.EventCore;
+import me.david.util.HostUtil;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;
 import me.david.util.Scheduler;
@@ -19,12 +20,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
 
-        if (EventCore.getInstance().getConfig().getBoolean("Settings.HostRank.Enabled")) {
-            if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host"))) {
-                String command = Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.JoinCommand").replaceAll("%player%", player.getName()), "event.host");
-                Scheduler.dispatchCommand(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
-            }
-        }
+        HostUtil.giveHost(player);
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerJoin.Enabled")) {
             event.setJoinMessage(MessageUtil.getPrefix() + MessageUtil.get("Messages.PlayerJoin.Message").replaceAll("%player%", player.getName()));

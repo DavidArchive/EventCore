@@ -1,6 +1,7 @@
 package me.david.listener;
 
 import me.david.EventCore;
+import me.david.util.HostUtil;
 import me.david.util.MessageUtil;
 import me.david.util.Scheduler;
 import org.bukkit.Bukkit;
@@ -17,13 +18,7 @@ public class PlayerQuitListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
-        if (EventCore.getInstance().getConfig().getBoolean("Settings.HostRank.Enabled")) {
-            if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host"))) {
-                Scheduler.dispatchCommand(() -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.QuitCommand").replaceAll("%player%", player.getName()), "event.host"));
-                });
-            }
-        }
+        HostUtil.removeHost(player);
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerQuit.Enabled")) {
             event.setQuitMessage(MessageUtil.getPrefix() + MessageUtil.get("Messages.PlayerQuit.Message").replaceAll("%player%", player.getName()));

@@ -23,7 +23,7 @@ public class MessageUtil {
     public String translateColorCodes(@NotNull String message) {
         Pattern pattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
         Matcher matcher = pattern.matcher(message);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         while (matcher.find()) {
             matcher.appendReplacement(buffer, ChatColor.of("#" + matcher.group(1)).toString());
         }
