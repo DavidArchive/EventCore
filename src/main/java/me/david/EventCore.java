@@ -5,6 +5,7 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPILogger;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.david.command.*;
 import me.david.listener.*;
 import me.david.manager.GameManager;
@@ -88,7 +89,9 @@ public class EventCore extends JavaPlugin {
         if (getConfig().getBoolean("Messages.Actionbar.Enabled")) {
             Scheduler.timerAsync(() -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.sendActionBar(MessageUtil.get("Messages.Actionbar.Message"));
+                    String message = MessageUtil.get("Messages.Actionbar.Message");
+                    message = PlaceholderAPI.setPlaceholders(player, message);
+                    player.sendActionBar(message);
                 }
             }, 0, 20);
         }
