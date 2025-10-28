@@ -3,7 +3,7 @@ paper-api = "1.21-R0.1-SNAPSHOT"
 lombok = "1.18.30"
 shadow = "8.3.0"
 placeholderapi = "2.11.6"
-commandapi = "10.1.2"
+commandapi = "11.0.0"
 run-paper = "2.3.0"
 
 [libraries]
