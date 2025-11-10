@@ -1,8 +1,8 @@
 package me.david;
 
 import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPILogger;
+import dev.jorel.commandapi.CommandAPIPaperConfig;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -18,10 +18,14 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Slf4j
 @Getter
 public class EventCore extends JavaPlugin {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger("EventCore");
 
     @Getter
     private static EventCore instance;
@@ -30,9 +34,10 @@ public class EventCore extends JavaPlugin {
     private KitManager kitManager;
 
     @Override
+    @SuppressWarnings("UnstableApiUsage")
     public void onLoad() {
         CommandAPI.setLogger(CommandAPILogger.fromJavaLogger(getLogger()));
-        CommandAPIBukkitConfig config = new CommandAPIBukkitConfig(this);
+        CommandAPIPaperConfig config = new CommandAPIPaperConfig(this);
         config.setNamespace("eventcore");
         CommandAPI.onLoad(config);
     }
