@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.david"
-version = "2.1"
+version = "2.2"
 description = "Event Server System with tons of useful commands and features"
 
 repositories {

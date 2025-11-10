@@ -19,6 +19,9 @@ Settings:
   MaxBuildHeight: 300 # Maximum build height
   DisableFallDamage: true # Disable fall damage
   DisableItemExplosions: true # Disable item explosions for End Crystal
+  Updates:
+    NotifyOnJoin: true
+    LogInConsole: false
   HostRank:
     Enabled: false
     Permission: "event.host" # Permission which is required to receive the host rank upon Join

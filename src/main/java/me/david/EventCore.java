@@ -46,8 +46,10 @@ public class EventCore extends JavaPlugin {
     @SuppressWarnings("deprecation")
     public void onEnable() {
         saveDefaultConfig();
-
         instance = this;
+
+        new UpdateChecker(instance, "DavidArchive", "EventCore").check();
+
         mapManager = new MapManager();
         gameManager = new GameManager();
         kitManager = new KitManager();

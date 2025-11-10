@@ -1,10 +1,8 @@
 package me.david.listener;
 
 import me.david.EventCore;
-import me.david.util.HostUtil;
-import me.david.util.MessageUtil;
-import me.david.util.PlayerUtil;
-import me.david.util.Scheduler;
+import me.david.util.*;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -41,6 +39,21 @@ public class PlayerJoinListener implements Listener {
                 player.setGameMode(GameMode.SPECTATOR);
             }
         }, 2);
+
+        if (player.hasPermission("event.notify") && EventCore.getInstance().getConfig().getBoolean("Settings.Updates.NotifyOnJoin")) {
+            UpdateChecker updateChecker = new UpdateChecker(EventCore.getInstance(), "DavidArchive", "EventCore");
+            updateChecker.check();
+
+            Bukkit.getScheduler().runTaskLater(EventCore.getInstance(), () -> {
+                if (updateChecker.isHasUpdate()) {
+                    player.sendMessage(Component.empty());
+                    player.sendMessage(MessageUtil.getPrefix() + MessageUtil.translateColorCodes("You're running an outdated version of EventCore. Please update to the latest version:"));
+                    player.sendMessage(updateChecker.getUpdateComponent());
+                    player.sendMessage(Component.empty());
+                }
+            }, 20L);
+        }
+
     }
 
 }
