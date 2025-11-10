@@ -6,7 +6,5 @@ author: VertrauterDavid, JavaMio
 website: https://github.com/DavidArchive/EventCore
 folia-supported: true
 softdepend: [PlaceholderAPI]
+depend: [WorldEdit]
 
-#depend: [WorldEdit]
-
-#perm
