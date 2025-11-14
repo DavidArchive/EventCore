@@ -3,12 +3,15 @@ package me.david.util;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import lombok.Getter;
 import me.david.EventCore;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.concurrent.TimeUnit;
 
 @Getter
+@SuppressWarnings("unused")
 public class Scheduler {
 
     @Getter
@@ -31,29 +34,27 @@ public class Scheduler {
     }
 
     private static class BukkitTaskWrapper implements TaskWrapper {
-        private final BukkitTask task;
+        private final @NotNull BukkitTask task;
 
-        public BukkitTaskWrapper(BukkitTask task) {
+        public BukkitTaskWrapper(@NotNull BukkitTask task) {
             this.task = task;
         }
 
         @Override
         public void cancel() {
-            if (task != null) {
-                task.cancel();
-            }
+            task.cancel();
         }
 
         @Override
         public boolean isCancelled() {
-            return task == null || task.isCancelled();
+            return task.isCancelled();
         }
     }
 
     private static class FoliaTaskWrapper implements TaskWrapper {
-        private Object task;
+        private @Nullable Object task;
 
-        public FoliaTaskWrapper(Object task) {
+        public FoliaTaskWrapper(@NotNull Object task) {
             this.task = task;
         }
 
@@ -63,9 +64,8 @@ public class Scheduler {
                 try {
                     Class<?> iface = Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
                     iface.getMethod("cancel").invoke(task);
-                    task = null;
-                } catch (Exception e) {
-                    System.out.println("Failed to cancel Folia task: " + e.getMessage());
+                } catch (Exception ignored) {
+                } finally {
                     task = null;
                 }
             }
@@ -77,14 +77,13 @@ public class Scheduler {
             try {
                 Class<?> iface = Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
                 return (Boolean) iface.getMethod("isCancelled").invoke(task);
-            } catch (Exception e) {
-                System.out.println("Failed to check if Folia task is cancelled: " + e.getMessage());
+            } catch (Exception ignored) {
                 return true;
             }
         }
     }
 
-    public static void runSync(Runnable runnable) {
+    public static void runSync(@NotNull Runnable runnable) {
         if (FOLIA) {
             Bukkit.getGlobalRegionScheduler().execute(EventCore.getInstance(), runnable);
         } else {
@@ -93,67 +92,68 @@ public class Scheduler {
     }
 
     @CanIgnoreReturnValue
-    public static TaskWrapper wait(Runnable runnable, long delay) {
-        long safeDelay = Math.max(delay, 1);
+    public static @NotNull TaskWrapper wait(@NotNull Runnable runnable, long delay) {
+        final long safeDelay = Math.max(delay, 1);
 
         if (FOLIA) {
-            Object foliaTask = Bukkit.getGlobalRegionScheduler().runDelayed(EventCore.getInstance(), (task) -> runnable.run(), safeDelay);
+            Object foliaTask = Bukkit.getGlobalRegionScheduler().runDelayed(EventCore.getInstance(),
+                    (task) -> runnable.run(), safeDelay);
             return new FoliaTaskWrapper(foliaTask);
         } else {
-            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(EventCore.getInstance(), runnable, delay);
+            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(EventCore.getInstance(), runnable, safeDelay);
             return new BukkitTaskWrapper(bukkitTask);
         }
     }
 
     @CanIgnoreReturnValue
-    public static TaskWrapper timer(Runnable runnable, long delay, long period) {
-        long safeDelay = Math.max(delay, 1);
-        long safePeriod = Math.max(period, 1);
+    public static @NotNull TaskWrapper timer(@NotNull Runnable runnable, long delay, long period) {
+        final long safeDelay = Math.max(delay, 1);
+        final long safePeriod = Math.max(period, 1);
 
         if (FOLIA) {
-            Object foliaTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(EventCore.getInstance(), (task) -> runnable.run(), safeDelay, safePeriod);
+            Object foliaTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(EventCore.getInstance(),
+                    (task) -> runnable.run(), safeDelay, safePeriod);
             return new FoliaTaskWrapper(foliaTask);
         } else {
-            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(EventCore.getInstance(), runnable, delay, period);
+            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(EventCore.getInstance(), runnable, safeDelay, safePeriod);
             return new BukkitTaskWrapper(bukkitTask);
         }
     }
 
     @CanIgnoreReturnValue
-    public static TaskWrapper timerAsync(Runnable runnable, long delay, long period) {
-        long safeDelay = Math.max(delay, 1);
-        long safePeriod = Math.max(period, 1);
+    public static @NotNull TaskWrapper timerAsync(@NotNull Runnable runnable, long delay, long period) {
+        final long safeDelay = Math.max(delay, 1);
+        final long safePeriod = Math.max(period, 1);
 
         if (FOLIA) {
-            Object foliaTask = Bukkit.getAsyncScheduler().runAtFixedRate(EventCore.getInstance(), (task) -> runnable.run(),
-                    safeDelay * 50, safePeriod * 50, TimeUnit.MILLISECONDS);
+            Object foliaTask = Bukkit.getAsyncScheduler().runAtFixedRate(EventCore.getInstance(),
+                    (task) -> runnable.run(), safeDelay * 50, safePeriod * 50, TimeUnit.MILLISECONDS);
             return new FoliaTaskWrapper(foliaTask);
         } else {
-            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(EventCore.getInstance(), runnable, delay, period);
+            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(EventCore.getInstance(),
+                    runnable, safeDelay, safePeriod);
             return new BukkitTaskWrapper(bukkitTask);
         }
     }
 
-    public static void cancelTask(Object task) {
+    public static void cancelTask(@Nullable Object task) {
         if (task == null) return;
 
-        if (task instanceof TaskWrapper) {
-            ((TaskWrapper) task).cancel();
-        } else if (task instanceof BukkitTask) {
-            ((BukkitTask) task).cancel();
+        if (task instanceof TaskWrapper wrapper) {
+            wrapper.cancel();
+        } else if (task instanceof BukkitTask bukkitTask) {
+            bukkitTask.cancel();
         } else if (FOLIA) {
-            // Handle raw Folia task objects
             try {
                 task.getClass().getMethod("cancel").invoke(task);
-            } catch (Exception e) {
-                // ignore
+            } catch (Exception ignored) {
             }
         }
     }
 
-    public static void dispatchCommand(Runnable commandRunnable) {
+    public static void dispatchCommand(@NotNull Runnable commandRunnable) {
         if (FOLIA) {
-            Bukkit.getGlobalRegionScheduler().execute(EventCore.getInstance(), commandRunnable);
+            Bukkit.getGlobalRegionScheduler().execute(Homes.getInstance(), commandRunnable);
         } else {
             commandRunnable.run();
         }
