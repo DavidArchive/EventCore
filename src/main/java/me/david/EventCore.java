@@ -102,6 +102,9 @@ public class EventCore extends JavaPlugin {
                 }
             }, 0, 20);
         }
+
+        int id = 28277;
+        new Metrics(this, id);
     }
 
     @Override
