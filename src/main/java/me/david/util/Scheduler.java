@@ -153,7 +153,7 @@ public class Scheduler {
 
     public static void dispatchCommand(@NotNull Runnable commandRunnable) {
         if (FOLIA) {
-            Bukkit.getGlobalRegionScheduler().execute(Homes.getInstance(), commandRunnable);
+            Bukkit.getGlobalRegionScheduler().execute(EventCore.getInstance(), commandRunnable);
         } else {
             commandRunnable.run();
         }
