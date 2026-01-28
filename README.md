@@ -5,87 +5,62 @@
 ![stars](https://img.shields.io/github/stars/VertrauterDavid/EventCore?style=for-the-badge)
 ![forks](https://img.shields.io/github/forks/VertrauterDavid/EventCore?style=for-the-badge)
 
-<hr>
+---
 
 ## Installation
-1. Download jar from [here](https://github.com/VertrauterDavid/EventCore/releases/latest)
+1. Download jar from [here](https://github.com/DavidArchive/EventCore/releases/latest)
 2. Put the jar in your plugins folder
 3. Restart your server (not reload)
 
 ## Update
-1. Download the new jar from [here](https://github.com/VertrauterDavid/EventCore/releases/latest)
+1. Download the new jar from [here](https://github.com/DavidArchive/EventCore/releases/latest)
 2. Replace the old jar with the new one
 3. Delete the old `config.yml` and restart your server
 
-<hr>
-
-## Future updates
-- Possibility to create teams (for tournaments or similar)
-- Integrated fast world reset system
-- Placeholder Support in Messages
-
 ---
 
-## API Usage
+### Maven
 
-### Example Listener
+```xml
+<repository>
+  <id>allaystudios</id>
+  <url>https://repo.allay-studios.com/public</url>
+</repository>
 
-Here is an example of how to process a custom `KitGiveEvent`:
+<dependency>
+  <groupId>me.david</groupId>
+  <artifactId>EventCore</artifactId>
+  <version>VERSION</version>
+</dependency>
+```
 
-```java
-@EventHandler
-public void onKitGiven(final KitGiveEvent event) {
-    final Player player = event.getPlayer();
-    final String kit = event.getKitName();
+### Gradle Kotlin
 
-    if (player == null || kit == null) {
-        Logger.getAnonymousLogger().warning("Kit name or Player is equal to null");
-        return;
-    }
-
-    if (kit.equalsIgnoreCase("default")) {
-        Logger.getAnonymousLogger().warning("The kit name is equal to default");
-        return;
-    }
-
-    final String broadcastMessage = "%player% has been given the %kit% kit!"
-            .replace("%player%", player.getName())
-            .replace("%kit%", kit);
-
-    Bukkit.broadcast(Component.text(broadcastMessage).color(NamedTextColor.GREEN));
+```kotlin
+maven {
+  name = "allaystudios"
+  url = uri("https://repo.allay-studios.com/releases")
 }
+
+implementation("me.david:EventCore:VERSION")
 ```
 
----
-
-## API Access
-
-The main class `EventCoreAPI` provides the central access to essential managers and functions.
-
-### Accessing the API Instance
-
-Before using the API, ensure it is initialized:
-
-```java
-EventCoreAPI.initialize(plugin);
-```
-
-To retrieve the API instance, use:
+Example API Usage:
 
 ```java
 EventCoreAPI api = EventCoreAPI.get();
+
+GameManager gameManager = api.getGameManager();
+gameManager.start();
+gameManager.stop("Winner");
+
+KitManager kitManager = api.getKitManager();
+kitManager.enable("cool kit");
+kitManager.give(mio);
+
+MapManager mapManager = api.getMapManager();
+mapManager.drop();
 ```
-
-### Available Components
-
-- **GameManager**  
-  Access to game management functionality.
-
-- **KitManager**  
-  Manage kits (e.g., saving, loading, deleting).
-
-- **MapManager**  
-  Manage maps and map-related functions.
 
 ---
 
@@ -114,7 +89,7 @@ EventCoreAPI api = EventCoreAPI.get();
 
 </details>
 
-<hr>
+---
 
 <details>
     <summary><h3 style="display: inline;">Permissions</h3></summary>
@@ -127,7 +102,7 @@ EventCoreAPI api = EventCoreAPI.get();
 
 </details>
 
-<hr>
+---
 
 <details>
     <summary><h3 style="display: inline;">Placeholders</h3></summary>
