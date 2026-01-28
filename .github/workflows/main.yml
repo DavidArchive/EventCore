@@ -1,0 +1,22 @@
+name: Publish project to Maven repository
+on:
+  push:
+    branches: [ main ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 21
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Create gradle.properties
+        run: |
+          mkdir -p ~/.gradle
+          echo "allayUsername=${{ secrets.MAVEN_NAME }}" >> ~/.gradle/gradle.properties
+          echo "allayPassword=${{ secrets.MAVEN_SECRET }}" >> ~/.gradle/gradle.properties
+      - name: Publish with Gradle
+        run: ./gradlew build publish

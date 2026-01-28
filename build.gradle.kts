@@ -9,6 +9,12 @@ group = "me.david"
 version = "2.2"
 description = "Event Server System with tons of useful commands and features"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -25,37 +31,36 @@ dependencies {
     compileOnlyApi(libs.placeholderapi)
 }
 
-tasks {
-    jar {
-        enabled = false
-    }
-
-    shadowJar {
-        archiveFileName = "${rootProject.name}-${project.version}.jar"
-        archiveClassifier = null
-
-
-        manifest {
-            attributes["Implementation-Version"] = rootProject.version
-            attributes["paperweight-mappings-namespace"] = "mojang"
+publishing {
+    repositories {
+        maven {
+            name = "allay"
+            url = uri("https://repo.allay-studios.com/public")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
         }
     }
-
-    assemble {
-        dependsOn(shadowJar)
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+            from(components["java"])
+        }
     }
+}
 
-    withType<JavaCompile> {
-        options.encoding = Charsets.UTF_8.name()
-        options.release = 21
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand(
+            "version" to project.version
+        )
     }
+}
 
-    withType<Javadoc>() {
-        options.encoding = Charsets.UTF_8.name()
-    }
-
-    defaultTasks("build")
-
+tasks {
     // 1.8.8 - 1.16.5 = Java 8
     // 1.17           = Java 16
     // 1.18 - 1.20.4  = Java 17
@@ -101,13 +106,5 @@ tasks {
         }
 
         jvmArgs = jvmArgsExternal
-    }
-}
-
-tasks.processResources {
-    filesMatching("plugin.yml") {
-        expand(
-            "version" to project.version
-        )
     }
 }
