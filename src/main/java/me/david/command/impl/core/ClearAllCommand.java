@@ -5,6 +5,7 @@ import dev.jorel.commandapi.executors.CommandArguments;
 import me.david.EventCore;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +31,8 @@ public class ClearAllCommand {
             amount++;
         }
 
-        sender.sendMessage(MessageUtil.getPrefix() + "You successfully cleared %amount% players!".replaceAll("%amount%", String.valueOf(amount)));
+        int result = amount;
+
+        sender.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("You successfully cleared %amount% players!").replaceText(b -> b.matchLiteral("%amount%").replacement(Component.text(String.valueOf(result))))));
     }
 }

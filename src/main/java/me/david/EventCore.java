@@ -43,7 +43,6 @@ public class EventCore extends JavaPlugin {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onEnable() {
         saveDefaultConfig();
         instance = this;

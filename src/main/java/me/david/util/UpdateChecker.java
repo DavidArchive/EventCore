@@ -71,9 +71,9 @@ public class UpdateChecker {
         if (hasUpdate) {
             EventCore.LOGGER.info(" ");
             EventCore.LOGGER.info("New version available for EventCore!");
-            EventCore.LOGGER.info("Current: " + currentVer);
-            EventCore.LOGGER.info("Latest: " + latestVer);
-            EventCore.LOGGER.info("Download: " + downloadUrl);
+            EventCore.LOGGER.info("Current: {}", currentVer);
+            EventCore.LOGGER.info("Latest: {}", latestVer);
+            EventCore.LOGGER.info("Download: {}", downloadUrl);
             EventCore.LOGGER.info(" ");
         } else {
             EventCore.LOGGER.info("No updates available for EventCore");

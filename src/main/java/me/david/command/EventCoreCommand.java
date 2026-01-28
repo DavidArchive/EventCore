@@ -5,6 +5,7 @@ import me.david.EventCore;
 import me.david.command.impl.core.*;
 import me.david.util.MessageUtil;
 import me.david.util.Scheduler;
+import net.kyori.adventure.text.Component;
 
 public class EventCoreCommand {
 
@@ -31,10 +32,10 @@ public class EventCoreCommand {
                         new AutoBorderCommand(plugin).init()
                 )
                 .executesPlayer((player, args) -> {
-                    player.sendMessage(" ");
+                    player.sendMessage(Component.empty());
                     player.sendMessage(MessageUtil.getPrefix() + "§7Running §aEventCore §7v" + EventCore.getInstance().getDescription().getVersion() + " §7on §a" + getSoftware());
                     player.sendMessage(MessageUtil.getPrefix() + "§7Download at §ahttps://github.com/VertrauterDavid");
-                    player.sendMessage(" ");
+                    player.sendMessage(Component.empty());
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event start");
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event stop <winner>");
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event drop");
@@ -45,7 +46,7 @@ public class EventCoreCommand {
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event kickspec");
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event kickall");
                     player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event clearall");
-                    player.sendMessage(" ");
+                    player.sendMessage(Component.empty());
                 })
                 .register();
     }

@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.executors.CommandArguments;
 import me.david.EventCore;
 import me.david.util.MessageUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand {
@@ -24,7 +25,6 @@ public class ReloadCommand {
         EventCore.getInstance().reloadConfig();
         final double reloadMS = System.currentTimeMillis() - currentMS;
 
-        sender.sendMessage(MessageUtil.getPrefix() + "§aYou successfully reloaded the config within " + reloadMS + "ms!");
-
+        sender.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§aYou successfully reloaded the config within %ms%ms!").replaceText(b -> b.matchLiteral("%ms%").replacement(Component.text(String.valueOf(reloadMS))))));
     }
 }
