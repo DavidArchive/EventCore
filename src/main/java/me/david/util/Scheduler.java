@@ -3,10 +3,10 @@ package me.david.util;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import lombok.Getter;
 import me.david.EventCore;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
