@@ -15,7 +15,6 @@ public class EventCoreCommand {
         init();
     }
 
-    @SuppressWarnings("deprecation")
     private void init() {
         new CommandAPICommand("event")
                 .withAliases("eventcore", "e")

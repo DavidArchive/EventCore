@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.Objects;
+import java.util.Map;
 
 public class PlayerJoinListener implements Listener {
 
@@ -21,9 +21,10 @@ public class PlayerJoinListener implements Listener {
         HostUtil.giveHost(player);
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerJoin.Enabled")) {
-            event.setJoinMessage(MessageUtil.getPrefix() + MessageUtil.get("Messages.PlayerJoin.Message").replaceAll("%player%", player.getName()));
+            Component message = MessageUtil.getPrefix().append(MessageUtil.format("Messages.PlayerJoin.Message", Map.of("%player%", Component.text(player.getName()))));
+            event.joinMessage(message);
         } else {
-            event.setJoinMessage("");
+            event.joinMessage(Component.empty());
         }
 
         player.teleportAsync(EventCore.getInstance().getMapManager().getSpawnLocation());
@@ -47,13 +48,12 @@ public class PlayerJoinListener implements Listener {
             Bukkit.getScheduler().runTaskLater(EventCore.getInstance(), () -> {
                 if (updateChecker.isHasUpdate()) {
                     player.sendMessage(Component.empty());
-                    player.sendMessage(MessageUtil.getPrefix() + MessageUtil.translateColorCodes("You're running an outdated version of EventCore. Please update to the latest version:"));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("You're running an outdated version of EventCore. Please update to the latest version:")));
                     player.sendMessage(updateChecker.getUpdateComponent());
                     player.sendMessage(Component.empty());
                 }
             }, 20L);
         }
-
     }
 
 }

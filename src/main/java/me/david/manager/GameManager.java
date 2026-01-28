@@ -10,9 +10,12 @@ import me.david.util.BorderUtil;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;
 import me.david.util.Scheduler;
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -30,7 +33,6 @@ public class GameManager {
     private long inGameTimer;
     private boolean autoDropped = false;
 
-    @SuppressWarnings("deprecation")
     public void start() {
         stopAllTimers();
         if (timerRunning) return;
@@ -58,22 +60,38 @@ public class GameManager {
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (current > 0) {
-                    String color = MessageUtil.get("Messages.StartTimer.Colors." + current + "sec");
+                    String color = EventCore.getInstance().getConfig().getString("Messages.StartTimer.Colors." + current + "sec");
                     String timerText = color + current + "§7";
 
-                    player.sendMessage(MessageUtil.getPrefix()
-                            + MessageUtil.get("Messages.StartTimer.Message").replaceAll("%timer%", timerText));
-                    player.sendTitle(
-                            MessageUtil.get("Messages.StartTimer.Title").replaceAll("%timer%", timerText),
-                            MessageUtil.get("Messages.StartTimer.SubTitle").replaceAll("%timer%", timerText)
+                    var replacements = Map.of(
+                            "%timer%", MessageUtil.translateColorCodes(timerText),
+                            "%prefix%", MessageUtil.getPrefix()
                     );
+
+                    player.sendMessage(
+                            MessageUtil.getPrefix().append(
+                                    MessageUtil.format("Messages.StartTimer.Message", replacements)
+                            )
+                    );
+
+                    Title title = Title.title(
+                            MessageUtil.format("Messages.StartTimer.Title", replacements),
+                            MessageUtil.format("Messages.StartTimer.SubTitle", replacements)
+                    );
+                    player.showTitle(title);
+
                     player.playSound(player.getLocation(), Sound.ENTITY_CHICKEN_EGG, 5, 5);
                 } else {
-                    player.sendMessage(MessageUtil.getPrefix() + MessageUtil.get("Messages.Start.Message"));
-                    player.sendTitle(
+                    player.sendMessage(
+                            MessageUtil.getPrefix().append(MessageUtil.get("Messages.Start.Message"))
+                    );
+
+                    Title title = Title.title(
                             MessageUtil.get("Messages.Start.Title"),
                             MessageUtil.get("Messages.Start.SubTitle")
                     );
+                    player.showTitle(title);
+
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 5, 5);
                 }
             }
@@ -130,7 +148,6 @@ public class GameManager {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void stop(final String winner) {
         GameStopEvent gameStopEvent = new GameStopEvent(winner);
         Bukkit.getPluginManager().callEvent(gameStopEvent);
@@ -146,13 +163,24 @@ public class GameManager {
         stopInGameTimer();
         stopAllTimers();
 
+        var replacements = Map.of(
+                "%winner%", MessageUtil.translateColorCodes(winner),
+                "%prefix%", MessageUtil.getPrefix()
+        );
+
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(MessageUtil.getPrefix()
-                    + MessageUtil.get("Messages.Stop.Message").replaceAll("%winner%", winner));
-            player.sendTitle(
-                    MessageUtil.get("Messages.Stop.Title").replaceAll("%winner%", winner),
-                    MessageUtil.get("Messages.Stop.SubTitle").replaceAll("%winner%", winner)
+            player.sendMessage(
+                    MessageUtil.getPrefix().append(
+                            MessageUtil.format("Messages.Stop.Message", replacements)
+                    )
             );
+
+            Title title = Title.title(
+                    MessageUtil.format("Messages.Stop.Title", replacements),
+                    MessageUtil.format("Messages.Stop.SubTitle", replacements)
+            );
+            player.showTitle(title);
+
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 5, 5);
             PlayerUtil.cleanPlayer(player);
         }
@@ -172,7 +200,6 @@ public class GameManager {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void startInGameTimer() {
         inGameTimer = 0;
 
@@ -186,13 +213,13 @@ public class GameManager {
 
             Bukkit.getPluginManager().callEvent(new InGameTimerTickEvent(inGameTimer));
 
-            String message = MessageUtil.get("Settings.IngameTimer.Format")
-                    .replaceAll("hh", String.format("%02d", (inGameTimer / 3600)))
-                    .replaceAll("mm", String.format("%02d", ((inGameTimer % 3600) / 60)))
-                    .replaceAll("ss", String.format("%02d", (inGameTimer % 60)));
+            String raw = Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.IngameTimer.Format"))
+                    .replace("hh", String.format("%02d", (inGameTimer / 3600)))
+                    .replace("mm", String.format("%02d", ((inGameTimer % 3600) / 60)))
+                    .replace("ss", String.format("%02d", (inGameTimer % 60)));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendActionBar(message);
+                player.sendActionBar(MessageUtil.translateColorCodes(raw));
             }
         }, 0, 20);
     }
