@@ -17,12 +17,6 @@ import java.util.Objects;
 
 public class ReviveCommand {
 
-    private final EventCore plugin;
-
-    public ReviveCommand(EventCore plugin) {
-        this.plugin = plugin;
-    }
-
     public CommandAPICommand init() {
         return new CommandAPICommand("revive")
                 .withPermission("event.command.revive")
