@@ -16,6 +16,7 @@
 
 Settings:
   SpawnLocation: 'world/0/200/0' # Change the setting only with '/event setSpawn'
+  LobbyLocation: 'world/0/200/0' # Change the setting only with '/event setLobby'
   MaxBuildHeight: 300 # Maximum build height
   DisableFallDamage: true # Disable fall damage
   DisableItemExplosions: true # Disable item explosions for End Crystal

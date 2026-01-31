@@ -31,6 +31,11 @@ public class SpawnCommand {
             return;
         }
 
-        player.teleportAsync(plugin.getMapManager().getSpawnLocation());
+        if (plugin.getGameManager().isRunning()) {
+            player.teleportAsync(plugin.getMapManager().getSpawnLocation());
+            return;
+        }
+
+        player.teleportAsync(plugin.getMapManager().getLobbyLocation());
     }
 }

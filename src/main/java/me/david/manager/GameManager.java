@@ -37,6 +37,10 @@ public class GameManager {
         stopAllTimers();
         if (timerRunning) return;
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.teleportAsync(EventCore.getInstance().getMapManager().getSpawnLocation());
+        }
+
         running = false;
         autoDropped = false;
         timerRunning = true;

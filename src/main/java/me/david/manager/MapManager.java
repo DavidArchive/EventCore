@@ -16,9 +16,13 @@ import org.jetbrains.annotations.NotNull;
 public class MapManager {
 
     private Location spawnLocation;
+    private Location lobbyLocation;
 
     public MapManager() {
-        Scheduler.wait(() -> spawnLocation = LocationUtil.fromString(EventCore.getInstance().getConfig().getString("Settings.SpawnLocation", "world/0/200/0")), 2);
+        Scheduler.wait(() -> {
+            spawnLocation = LocationUtil.fromString(EventCore.getInstance().getConfig().getString("Settings.SpawnLocation", "world/0/200/0"));
+            lobbyLocation = LocationUtil.fromString(EventCore.getInstance().getConfig().getString("Settings.LobbyLocation", "world/0/200/0"));
+        }, 2);
     }
 
     public void saveSpawnLocation(@NotNull final Player player) {
