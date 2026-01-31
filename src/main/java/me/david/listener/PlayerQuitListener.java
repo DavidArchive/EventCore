@@ -3,14 +3,13 @@ package me.david.listener;
 import me.david.EventCore;
 import me.david.util.HostUtil;
 import me.david.util.MessageUtil;
-import me.david.util.Scheduler;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Objects;
+import java.util.Map;
 
 public class PlayerQuitListener implements Listener {
 
@@ -21,9 +20,10 @@ public class PlayerQuitListener implements Listener {
         HostUtil.removeHost(player);
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerQuit.Enabled")) {
-            event.setQuitMessage(MessageUtil.getPrefix() + MessageUtil.get("Messages.PlayerQuit.Message").replaceAll("%player%", player.getName()));
+            Component message = MessageUtil.format("Messages.PlayerQuit.Message", Map.of("%player%", Component.text(player.getName())));
+            event.quitMessage(message);
         } else {
-            event.setQuitMessage("");
+            event.quitMessage(Component.empty());
         }
     }
 

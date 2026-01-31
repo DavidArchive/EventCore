@@ -29,9 +29,9 @@ public class AutoBorderCommand {
 
         if (!state) {
             BorderUtil.lastOptimal = BorderUtil.borderDefault;
-            player.sendMessage(MessageUtil.getPrefix() + "AutoBorder has been §cdeactivated!");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("AutoBorder has been §cdeactivated!")));
         } else {
-            player.sendMessage(MessageUtil.getPrefix() + "AutoBorder has been §aactivated!");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("AutoBorder has been §aactivated!")));
         }
     }
 

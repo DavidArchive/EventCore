@@ -1,14 +1,12 @@
 package me.david.util;
 
 import com.google.gson.JsonParser;
-import jdk.jfr.Event;
 import lombok.Getter;
 import me.david.EventCore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,9 +71,9 @@ public class UpdateChecker {
         if (hasUpdate) {
             EventCore.LOGGER.info(" ");
             EventCore.LOGGER.info("New version available for EventCore!");
-            EventCore.LOGGER.info("Current: " + currentVer);
-            EventCore.LOGGER.info("Latest: " + latestVer);
-            EventCore.LOGGER.info("Download: " + downloadUrl);
+            EventCore.LOGGER.info("Current: {}", currentVer);
+            EventCore.LOGGER.info("Latest: {}", latestVer);
+            EventCore.LOGGER.info("Download: {}", downloadUrl);
             EventCore.LOGGER.info(" ");
         } else {
             EventCore.LOGGER.info("No updates available for EventCore");

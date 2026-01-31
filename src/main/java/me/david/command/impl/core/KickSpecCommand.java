@@ -33,6 +33,7 @@ public class KickSpecCommand {
             }
         }
 
-        sender.sendMessage(MessageUtil.getPrefix() + "You successfully kicked %amount% players!".replaceAll("%amount%", String.valueOf(amount)));
+        int result = amount;
+        sender.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("You successfully kicked %amount% players!").replaceText(b -> b.matchLiteral("%amount%").replacement(Component.text(String.valueOf(result))))));
     }
 }

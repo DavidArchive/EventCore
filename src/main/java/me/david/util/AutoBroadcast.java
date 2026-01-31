@@ -1,6 +1,7 @@
 package me.david.util;
 
 import me.david.EventCore;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -30,11 +31,11 @@ public class AutoBroadcast implements Runnable {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), EventCore.getInstance().getConfig().getString("AutoBroadcast.BroadcastCommand", "").replaceAll("%message%", message));
         } else {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(" ");
-                player.sendMessage(" ");
+                player.sendMessage(Component.empty());
+                player.sendMessage(Component.empty());
                 player.sendMessage(MessageUtil.translateColorCodes(message));
-                player.sendMessage(" ");
-                player.sendMessage(" ");
+                player.sendMessage(Component.empty());
+                player.sendMessage(Component.empty());
             }
         }
 

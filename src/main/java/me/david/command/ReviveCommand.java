@@ -1,9 +1,9 @@
 package me.david.command;
 
+import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
-import dev.jorel.commandapi.CommandAPICommand;
 import me.david.EventCore;
 import me.david.util.MessageUtil;
 import me.david.util.PlayerUtil;

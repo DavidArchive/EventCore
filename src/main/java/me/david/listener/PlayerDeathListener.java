@@ -10,9 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class PlayerDeathListener implements Listener {
+import java.util.Map;
 
-    //todo - refactor death messages to use components
+public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -25,9 +25,14 @@ public class PlayerDeathListener implements Listener {
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerDeath.Enabled")) {
             if (player.getKiller() != null) {
-                event.setDeathMessage(MessageUtil.get("Messages.PlayerDeath.Message1").replaceAll("%player%", player.getName()).replaceAll("%killer%", player.getKiller().getName()));
+                event.deathMessage(MessageUtil.format("Messages.PlayerDeath.Message1", Map.of(
+                                "%player%", Component.text(player.getName()),
+                                "%killer%", Component.text(player.getKiller().getName()))
+                ));
             } else {
-                event.setDeathMessage(MessageUtil.get("Messages.PlayerDeath.Message2").replaceAll("%player%", player.getName()));
+                event.deathMessage(MessageUtil.format(
+                        "Messages.PlayerDeath.Message2", Map.of("%player%", Component.text(player.getName()))
+                ));
             }
         } else {
             event.deathMessage(Component.empty());

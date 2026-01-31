@@ -43,7 +43,6 @@ public class EventCore extends JavaPlugin {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onEnable() {
         saveDefaultConfig();
         instance = this;
@@ -96,15 +95,15 @@ public class EventCore extends JavaPlugin {
         if (getConfig().getBoolean("Messages.Actionbar.Enabled")) {
             Scheduler.timerAsync(() -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    String message = MessageUtil.get("Messages.Actionbar.Message");
-                    message = PlaceholderAPI.setPlaceholders(player, message);
-                    player.sendActionBar(message);
+                    String raw = getConfig().getString("Messages.Actionbar.Message", "&aYou are playing the best Event!");
+                    String parsed = PlaceholderAPI.setPlaceholders(player, raw);
+
+                    player.sendActionBar(MessageUtil.translateColorCodes(parsed));
                 }
             }, 0, 20);
         }
 
-        int id = 28277;
-        new Metrics(this, id);
+        new Metrics(this, 28277);
     }
 
     @Override
