@@ -39,7 +39,7 @@
 ```kotlin
 maven {
   name = "allaystudios"
-  url = uri("https://repo.allay-studios.com/releases")
+  url = uri("https://repo.allay-studios.com/public")
 }
 
 implementation("me.david:EventCore:VERSION")
