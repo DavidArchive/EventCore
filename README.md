@@ -1,9 +1,9 @@
 # EventCore
 
-[![download](https://img.shields.io/github/downloads/VertrauterDavid/EventCore/total?style=for-the-badge)](https://github.com/VertrauterDavid/EventCore/releases/latest)
-![license](https://img.shields.io/github/license/VertrauterDavid/EventCore?style=for-the-badge)
-![stars](https://img.shields.io/github/stars/VertrauterDavid/EventCore?style=for-the-badge)
-![forks](https://img.shields.io/github/forks/VertrauterDavid/EventCore?style=for-the-badge)
+[![download](https://img.shields.io/github/downloads/DavidArchive/EventCore/total?style=for-the-badge)](https://github.com/DavidArchive/EventCore/releases/latest)
+![license](https://img.shields.io/github/license/DavidArchive/EventCore?style=for-the-badge)
+![stars](https://img.shields.io/github/stars/DavidArchive/EventCore?style=for-the-badge)
+![forks](https://img.shields.io/github/forks/DavidArchive/EventCore?style=for-the-badge)
 
 ---
 
