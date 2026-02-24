@@ -27,7 +27,7 @@ dependencies {
     implementation(libs.paper.api)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
-    implementation(libs.commandapi)
+    compileOnly(libs.commandapi)
     compileOnlyApi(libs.placeholderapi)
 }
 

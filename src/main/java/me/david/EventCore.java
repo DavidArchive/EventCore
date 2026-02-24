@@ -1,8 +1,6 @@
 package me.david;
 
 import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPILogger;
-import dev.jorel.commandapi.CommandAPIPaperConfig;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -32,15 +30,6 @@ public class EventCore extends JavaPlugin {
     private MapManager mapManager;
     private GameManager gameManager;
     private KitManager kitManager;
-
-    @Override
-    @SuppressWarnings("UnstableApiUsage")
-    public void onLoad() {
-        CommandAPI.setLogger(CommandAPILogger.fromJavaLogger(getLogger()));
-        CommandAPIPaperConfig config = new CommandAPIPaperConfig(this);
-        config.setNamespace("eventcore");
-        CommandAPI.onLoad(config);
-    }
 
     @Override
     public void onEnable() {
