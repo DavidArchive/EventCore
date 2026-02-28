@@ -27,10 +27,10 @@ public class KitCommand {
                         new KitDeleteCommand(plugin).init()
                 )
                 .executesPlayer((player, args) -> {
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/kit <player>");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/kit enable <kit>");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/kit save <kit>");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/kit delete <kit>");
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/kit <player>")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/kit enable <kit>")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/kit save <kit>")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/kit delete <kit>")));
                 })
                 .register();
     }

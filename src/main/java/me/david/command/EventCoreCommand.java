@@ -33,19 +33,19 @@ public class EventCoreCommand {
                 )
                 .executesPlayer((player, args) -> {
                     player.sendMessage(Component.empty());
-                    player.sendMessage(MessageUtil.getPrefix() + "§7Running §aEventCore §7v" + EventCore.getInstance().getDescription().getVersion() + " §7on §a" + getSoftware());
-                    player.sendMessage(MessageUtil.getPrefix() + "§7Download at §ahttps://github.com/VertrauterDavid");
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§7Running §aEventCore §7v" + EventCore.getInstance().getDescription().getVersion() + " §7on §a" + getSoftware())));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§7Download at §ahttps://github.com/VertrauterDavid")));
                     player.sendMessage(Component.empty());
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event start");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event stop <winner>");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event drop");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event reset");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event autoBorder <on / off>");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event setSpawn");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event reload");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event kickspec");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event kickall");
-                    player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/event clearall");
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event start")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event stop <winner>")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event drop")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event reset")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event autoBorder <on / off>")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event setSpawn")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event reload")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event kickspec")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event kickall")));
+                    player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/event clearall")));
                     player.sendMessage(Component.empty());
                 })
                 .register();

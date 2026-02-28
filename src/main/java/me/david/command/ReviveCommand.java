@@ -44,23 +44,23 @@ public class ReviveCommand {
         final String targetName = Objects.requireNonNull(args.getOptional("target").orElse(null)).toString();
 
         if (targetName == null) {
-            player.sendMessage(MessageUtil.getPrefix() + "Usage: §c/revive <player>");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Usage: §c/revive <player>")));
             return;
         }
 
         if (targetName.equalsIgnoreCase("*")) {
             Bukkit.getOnlinePlayers().forEach(PlayerUtil::cleanPlayer);
-            player.sendMessage(MessageUtil.getPrefix() + "§aEveryone §7has been revived!");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§aEveryone §7has been revived!")));
             return;
         }
 
         final Player target = Bukkit.getPlayerExact(targetName);
         if (target == null) {
-            player.sendMessage(MessageUtil.getPrefix() + "§cThis player is not online!");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§cThis player is not online!")));
             return;
         }
 
         PlayerUtil.cleanPlayer(target);
-        player.sendMessage(MessageUtil.getPrefix() + "§a" + target.getName() + " §7has been revived!");
+        player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§a" + target.getName() + " §7has been revived!")));
     }
 }

@@ -22,12 +22,12 @@ public class SpawnCommand {
 
     private void onCommand(Player player, CommandArguments args) {
         if (plugin.getMapManager().getSpawnLocation() == null) {
-            player.sendMessage(MessageUtil.getPrefix() + "§cThere isn’t a spawn location yet. Set one using the command /event setspawn");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§cThere isn't a spawn location yet. Set one using the command /event setspawn")));
             return;
         }
 
         if (plugin.getGameManager().isRunning() && !player.hasPermission("event.bypass")) {
-            player.sendMessage(MessageUtil.getPrefix() + "§cYou cannot teleport to the spawn while the event is running");
+            player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§cYou cannot teleport to the spawn while the event is running")));
             return;
         }
 
