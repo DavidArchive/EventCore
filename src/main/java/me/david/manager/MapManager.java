@@ -55,11 +55,11 @@ public class MapManager {
 
         Scheduler.dispatchCommand(() -> {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/world " + spawnLocation.getWorld().getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/pos1 " + edgeMin.getBlockX() + ",-63," + edgeMin.getBlockZ());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/pos2 " + edgeMax.getBlockX() + ",350," + edgeMax.getBlockZ());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/set 0");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/pos1 " + edgeMin.getBlockX() + ",0," + edgeMin.getBlockZ());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/pos2 " + edgeMax.getBlockX() + "," + EventCore.getInstance().getConfig().getLong("Settings.MaxBuildHeight", 365L) + "," + edgeMax.getBlockZ());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/replace !bedrock,barrier 0");
             EventCore.getInstance().getConfig().getStringList("Settings.Drop.CustomCommands").forEach(command ->
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1)));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1)));
         });
     }
 
@@ -72,7 +72,7 @@ public class MapManager {
         }
 
         Scheduler.dispatchCommand(() -> EventCore.getInstance().getConfig().getStringList("Settings.MapReset.Commands").forEach(command ->
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1))));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1))));
     }
 
 }
