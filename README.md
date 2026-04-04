@@ -56,7 +56,7 @@ gameManager.stop("Winner");
 
 KitManager kitManager = api.getKitManager();
 kitManager.enable("cool kit");
-kitManager.give(mio);
+kitManager.give(Bukkit.getPlayer("JavaMio"));
 
 MapManager mapManager = api.getMapManager();
 mapManager.drop();
