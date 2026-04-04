@@ -1,26 +1,24 @@
-package me.david.command;
+package me.david.command.impl;
 
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.executors.CommandArguments;
 import me.david.EventCore;
+import me.david.command.BukkitCommand;
 import me.david.util.MessageUtil;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SpawnCommand {
+public class SpawnCommand extends BukkitCommand {
 
     private final EventCore plugin;
 
     public SpawnCommand(EventCore plugin) {
+        super("spawn", "event.command.spawn");
         this.plugin = plugin;
     }
 
-    public CommandAPICommand init() {
-        return new CommandAPICommand("spawn")
-                .withPermission("event.command.spawn")
-                .executesPlayer(this::onCommand);
-    }
+    @Override
+    public void onCommand(CommandSender sender, String label, String[] args) {
+        if (!(sender instanceof final Player player)) return;
 
-    private void onCommand(Player player, CommandArguments args) {
         if (plugin.getMapManager().getSpawnLocation() == null) {
             player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§cThere isn't a spawn location yet. Set one using the command /event setspawn")));
             return;

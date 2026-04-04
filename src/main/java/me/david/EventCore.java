@@ -1,10 +1,9 @@
 package me.david;
 
-import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.david.command.*;
+import me.david.command.impl.*;
 import me.david.listener.*;
 import me.david.manager.GameManager;
 import me.david.manager.KitManager;
@@ -42,13 +41,11 @@ public class EventCore extends JavaPlugin {
         gameManager = new GameManager();
         kitManager = new KitManager();
 
-        CommandAPI.onEnable();
-
-        new AnnouncementCommand(instance).init().register();
-        new EventCoreCommand(instance);
+        new AnnouncementCommand(instance);
+        new EventCommand(instance);
         new KitCommand(instance);
-        new ReviveCommand(instance).init().register();
-        new SpawnCommand(instance).init().register();
+        new ReviveCommand();
+        new SpawnCommand(instance);
 
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), instance);
         Bukkit.getPluginManager().registerEvents(new BlockExplodeListener(), instance);
@@ -100,8 +97,6 @@ public class EventCore extends JavaPlugin {
         if (gameManager.isRunning()) {
             gameManager.stop(null);
         }
-
-        CommandAPI.onDisable();
     }
 
 }
