@@ -1,7 +1,6 @@
 package me.david;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.david.command.impl.*;
 import me.david.listener.*;
@@ -18,7 +17,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Slf4j
 @Getter
 public class EventCore extends JavaPlugin {
 
