@@ -7,3 +7,5 @@ website: https://github.com/DavidArchive/EventCore
 folia-supported: true
 softdepend: [PlaceholderAPI]
 depend: [WorldEdit]
+
+canvas-support: true
