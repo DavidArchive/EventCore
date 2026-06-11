@@ -3,6 +3,7 @@ package me.david.listener;
 import me.david.EventCore;
 import me.david.util.HostUtil;
 import me.david.util.MessageUtil;
+import me.david.util.PlaceholderHook;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,7 @@ public class PlayerQuitListener implements Listener {
         final Player player = event.getPlayer();
 
         HostUtil.removeHost(player);
+        PlaceholderHook.removeCachedTotemCount(player);
 
         if (EventCore.getInstance().getConfig().getBoolean("Messages.PlayerQuit.Enabled")) {
             Component message = MessageUtil.format("Messages.PlayerQuit.Message", Map.of("%player%", Component.text(player.getName())));

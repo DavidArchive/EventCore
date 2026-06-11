@@ -58,7 +58,7 @@ public class UpdateChecker {
                     hasUpdate = compare(currentVer, latestVer) < 0;
 
                     if (EventCore.getInstance().getConfig().getBoolean("Settings.Updates.LogInConsole")) {
-                        Bukkit.getScheduler().runTask(plugin, this::log);
+                        this.log();
                     }
                 }
             } catch (Exception exception) {

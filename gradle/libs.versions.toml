@@ -1,14 +1,16 @@
 [versions]
-paper-api = "1.21-R0.1-SNAPSHOT"
+canvas-api = "26.1.2.build.803-stable"
 lombok = "1.18.44"
 placeholderapi = "2.12.2"
+slf4j = "2.0.9"
 shadow = "9.4.1"
 run-paper = "3.0.2"
 
 [libraries]
-paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
+canvas-api = { group = "io.canvasmc.canvas", name = "canvas-api", version.ref = "canvas-api" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 
 [plugins]
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

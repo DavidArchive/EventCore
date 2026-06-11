@@ -31,7 +31,7 @@ public class BorderUtil implements Runnable {
             int optimal = getOptimalSize();
             if (lastOptimal > optimal) {
                 lastOptimal = optimal;
-                Scheduler.runSync(() -> EventCore.getInstance().getMapManager().getSpawnLocation().getWorld().getWorldBorder().setSize(optimal, (long) (current - optimal)));
+                Scheduler.runSync(() -> EventCore.getInstance().getMapManager().getSpawnLocation().getWorld().getWorldBorder().changeSize(optimal, (long) (current - optimal)));
             }
         }
     }
@@ -40,5 +40,4 @@ public class BorderUtil implements Runnable {
         int optimal = (int) (((Math.pow(PlayerUtil.getAlive(), 2)) / 60 + 4 + 0.6 * PlayerUtil.getAlive()) * 2);
         return Math.min(200, optimal);
     }
-
 }

@@ -3,6 +3,7 @@ package me.david.command.impl;
 import me.david.EventCore;
 import me.david.command.BukkitCommand;
 import me.david.util.BorderUtil;
+import me.david.util.FoliaUtil;
 import me.david.util.MessageUtil;
 import me.david.util.Scheduler;
 import net.kyori.adventure.text.Component;
@@ -26,7 +27,7 @@ public class EventCommand extends BukkitCommand {
     }
 
     private String getSoftware() {
-        return Scheduler.isFOLIA() ? "Folia" : "PaperMC";
+        return FoliaUtil.isCANVAS() ? "CanvasMC" : "PaperMC";
     }
 
     @Override
@@ -101,8 +102,10 @@ public class EventCommand extends BukkitCommand {
 
             if (args[0].equalsIgnoreCase("clearall")) {
                 for (final Player target : Bukkit.getOnlinePlayers()) {
-                    target.getInventory().setArmorContents(null);
-                    target.getInventory().clear();
+                    FoliaUtil.scheduleToOrRun(target, () -> {
+                        target.getInventory().setArmorContents(null);
+                        target.getInventory().clear();
+                    });
                 }
                 player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("All players has been cleared!")));
                 return;

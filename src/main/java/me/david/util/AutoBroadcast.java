@@ -28,7 +28,7 @@ public class AutoBroadcast implements Runnable {
 
         String message = messages.get(index);
         if (EventCore.getInstance().getConfig().getBoolean("AutoBroadcast.UseBroadcastCommand")) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), EventCore.getInstance().getConfig().getString("AutoBroadcast.BroadcastCommand", "").replaceAll("%message%", message));
+            Scheduler.dispatchCommand(() ->             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), EventCore.getInstance().getConfig().getString("AutoBroadcast.BroadcastCommand", "").replaceAll("%message%", message)));
         } else {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(Component.empty());

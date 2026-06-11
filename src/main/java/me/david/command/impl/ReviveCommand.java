@@ -24,7 +24,7 @@ public class ReviveCommand extends BukkitCommand {
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("*")) {
-                Bukkit.getOnlinePlayers().forEach(PlayerUtil::cleanPlayer);
+                Bukkit.getOnlinePlayers().forEach(PlayerUtil::cleanPlayerEnsureThread);
                 player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§aEveryone §7has been revived!")));
                 return;
             }
@@ -35,7 +35,7 @@ public class ReviveCommand extends BukkitCommand {
                 return;
             }
 
-            PlayerUtil.cleanPlayer(target);
+            PlayerUtil.cleanPlayerEnsureThread(target);
             player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§a" + target.getName() + " §7has been revived!")));
             return;
         }

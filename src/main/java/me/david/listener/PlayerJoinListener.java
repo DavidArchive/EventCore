@@ -27,32 +27,33 @@ public class PlayerJoinListener implements Listener {
             event.joinMessage(Component.empty());
         }
 
-        player.teleportAsync(EventCore.getInstance().getMapManager().getSpawnLocation());
+
         PlayerUtil.cleanPlayer(player);
         if (EventCore.getInstance().getGameManager().isRunning()) {
             player.getInventory().setArmorContents(null);
             player.getInventory().clear();
             player.setGameMode(GameMode.SPECTATOR);
         }
-        Scheduler.wait(() -> {
+        player.getScheduler().runDelayed(EventCore.getInstance(), task -> {
             player.teleportAsync(EventCore.getInstance().getMapManager().getSpawnLocation());
             if (EventCore.getInstance().getGameManager().isRunning()) {
                 player.setGameMode(GameMode.SPECTATOR);
             }
-        }, 2);
+        }, null, 2);
+
 
         if (player.hasPermission("event.notify") && EventCore.getInstance().getConfig().getBoolean("Settings.Updates.NotifyOnJoin")) {
             UpdateChecker updateChecker = new UpdateChecker(EventCore.getInstance(), "DavidArchive", "EventCore");
             updateChecker.check();
 
-            Bukkit.getScheduler().runTaskLater(EventCore.getInstance(), () -> {
+            player.getScheduler().runDelayed(EventCore.getInstance(), task -> {
                 if (updateChecker.isHasUpdate()) {
                     player.sendMessage(Component.empty());
                     player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("You're running an outdated version of EventCore. Please update to the latest version:")));
                     player.sendMessage(updateChecker.getUpdateComponent());
                     player.sendMessage(Component.empty());
                 }
-            }, 20L);
+            }, null, 20);
         }
     }
 

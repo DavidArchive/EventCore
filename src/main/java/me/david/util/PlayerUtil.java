@@ -20,6 +20,10 @@ public class PlayerUtil {
         return Bukkit.getOnlinePlayers().size();
     }
 
+    public void cleanPlayerEnsureThread(@NotNull Player player) {
+        FoliaUtil.scheduleToOrRun(player, () -> cleanPlayer(player));
+    }
+
     @SuppressWarnings("deprecation")
     public void cleanPlayer(@NotNull Player player) {
         player.setGameMode(GameMode.SURVIVAL);

@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.sql.SQLWarning;
+
 public class PlayerRespawnListener implements Listener {
 
     @EventHandler
@@ -17,5 +19,4 @@ public class PlayerRespawnListener implements Listener {
         PlayerUtil.cleanPlayer(player);
         player.setGameMode(GameMode.SPECTATOR);
     }
-
 }

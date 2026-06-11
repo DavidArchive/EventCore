@@ -24,7 +24,7 @@ public class HostUtil {
                 String command = Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.JoinCommand").replaceAll("%player%", player.getName()), "event.host");
                 Scheduler.dispatchCommand(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
             }
-            host.add(player);
+            host.add(player); // this looks incorrect? why is everyone being added to the host list
         }
     }
 

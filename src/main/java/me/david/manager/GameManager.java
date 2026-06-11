@@ -1,5 +1,6 @@
 package me.david.manager;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import lombok.Getter;
 import me.david.EventCore;
 import me.david.api.events.game.GameStartEvent;
@@ -24,10 +25,10 @@ public class GameManager {
     private boolean running = false;
     private volatile boolean timerRunning = false;
 
-    private Scheduler.TaskWrapper startTask;
-    private Scheduler.TaskWrapper autoStopTask;
-    private Scheduler.TaskWrapper autoDropTask;
-    private Scheduler.TaskWrapper timerTask;
+    private ScheduledTask startTask;
+    private ScheduledTask autoStopTask;
+    private ScheduledTask autoDropTask;
+    private ScheduledTask timerTask;
 
     private AtomicInteger timer;
     private long inGameTimer;
@@ -51,7 +52,7 @@ public class GameManager {
             return;
         }
 
-        startTask = Scheduler.timer(() -> {
+        startTask = Scheduler.repeated(() -> {
             if (!timerRunning || running) return;
 
             int current = timer.get();
@@ -124,7 +125,7 @@ public class GameManager {
         }, 0, 20);
 
         if (EventCore.getInstance().getConfig().getBoolean("Settings.AutoStop1Player")) {
-            autoStopTask = Scheduler.timer(() -> {
+            autoStopTask = Scheduler.repeated(() -> {
                 if (running && PlayerUtil.getAlive() == 1) {
                     running = false;
                     Scheduler.runSync(() -> stop(
@@ -139,7 +140,7 @@ public class GameManager {
         }
 
         if (EventCore.getInstance().getConfig().getBoolean("Settings.DropOnPlayerCount.Enabled")) {
-            autoDropTask = Scheduler.timer(() -> {
+            autoDropTask = Scheduler.repeated(() -> {
                 if (running && PlayerUtil.getAlive() <= EventCore.getInstance().getConfig().getLong("Settings.DropOnPlayerCount.Count") && !autoDropped) {
                     autoDropped = true;
                     EventCore.getInstance().getMapManager().drop();
@@ -182,7 +183,7 @@ public class GameManager {
             player.showTitle(title);
 
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 5, 5);
-            PlayerUtil.cleanPlayer(player);
+            PlayerUtil.cleanPlayerEnsureThread(player);
         }
 
         for (World world : Bukkit.getWorlds()) {
@@ -208,7 +209,7 @@ public class GameManager {
             timerTask = null;
         }
 
-        timerTask = Scheduler.timer(() -> {
+        timerTask = Scheduler.repeated(() -> {
             inGameTimer++;
 
             Bukkit.getPluginManager().callEvent(new InGameTimerTickEvent(inGameTimer));

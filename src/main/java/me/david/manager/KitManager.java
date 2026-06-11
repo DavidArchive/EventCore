@@ -6,6 +6,7 @@ import me.david.api.events.kit.KitDeleteEvent;
 import me.david.api.events.kit.KitEnableEvent;
 import me.david.api.events.kit.KitGiveEvent;
 import me.david.api.events.kit.KitSaveEvent;
+import me.david.util.FoliaUtil;
 import me.david.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,6 +31,10 @@ public class KitManager {
 
     public KitManager() {
         loadAllKits();
+    }
+
+    public void giveKitEnsureThread(final Player player) {
+        FoliaUtil.scheduleToOrRun(player, () -> give(player));
     }
 
     public void give(@NotNull final Player player) {
@@ -116,7 +121,7 @@ public class KitManager {
         EventCore.getInstance().getConfig().set("Kits.EnabledKit", kit);
         EventCore.getInstance().saveConfig();
 
-        Bukkit.getOnlinePlayers().forEach(this::give);
+        Bukkit.getOnlinePlayers().forEach(this::giveKitEnsureThread);
     }
 
     public void delete(@NotNull final String kit) {

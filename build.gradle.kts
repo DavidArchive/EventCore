@@ -11,7 +11,7 @@ description = "Event Server System with tons of useful commands and features"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -19,15 +19,17 @@ repositories {
     mavenLocal()
     mavenCentral()
 
-    maven("https://repo.papermc.io/repository/maven-public/") // PaperMC
+    maven("https://maven.canvasmc.io/releases") // CanvasMC
+    maven("https://repo.papermc.io/repository/maven-public/") // Minecraft API transitive dependencies
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
 dependencies {
-    compileOnly(libs.paper.api)
+    compileOnly(libs.canvas.api)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
     compileOnlyApi(libs.placeholderapi)
+    compileOnly(libs.slf4j.api)
 }
 
 publishing {
@@ -71,9 +73,9 @@ tasks {
     // 1.8.8 - 1.16.5 = Java 8
     // 1.17           = Java 16
     // 1.18 - 1.20.4  = Java 17
-    // 1-20.5+        = Java 21
+    // Canvas 26.1.2+ = Java 25
     val version = "1.21.8"
-    val javaVersion = JavaLanguageVersion.of(21)
+    val javaVersion = JavaLanguageVersion.of(25)
 
     val jvmArgsExternal = listOf(
         "-Dcom.mojang.eula.agree=true"

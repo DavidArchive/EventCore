@@ -27,7 +27,8 @@ public class KitCommand extends BukkitCommand {
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("*")) {
-                Bukkit.getOnlinePlayers().forEach(plugin.getKitManager()::give);
+
+                Bukkit.getOnlinePlayers().forEach(plugin.getKitManager()::giveKitEnsureThread);
                 player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("Everyone §7has been equipped!")));
                 return;
             }
@@ -38,7 +39,7 @@ public class KitCommand extends BukkitCommand {
                 return;
             }
 
-            plugin.getKitManager().give(target);
+            plugin.getKitManager().giveKitEnsureThread(target);
             player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§a" + target.getName() + " §7has been equipped!")));
             return;
         }
