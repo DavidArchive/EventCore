@@ -20,9 +20,9 @@ public class CanvasPlayerRespawnListener implements Listener {
     public void onPlayerPostRespawn(PlayerPostRespawnEvent event) {
         var player = event.getPlayer();
 
-        FoliaUtil.scheduleToOrRun(player, () -> {
+        player.getScheduler().runDelayed(EventCore.getInstance(), task -> {
             PlayerUtil.cleanPlayer(player);
             player.setGameMode(GameMode.SPECTATOR);
-        });
+        }, null, 3);
     }
 }
