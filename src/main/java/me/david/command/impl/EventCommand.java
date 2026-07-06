@@ -4,7 +4,7 @@ import me.david.EventCore;
 import me.david.command.BukkitCommand;
 import me.david.util.BorderUtil;
 import me.david.util.MessageUtil;
-import me.david.util.Scheduler;
+import me.david.util.folia.FoliaScheduler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -26,7 +26,7 @@ public class EventCommand extends BukkitCommand {
     }
 
     private String getSoftware() {
-        return Scheduler.isFOLIA() ? "Folia" : "PaperMC";
+        return FoliaScheduler.isFolia() ? "Folia" : "PaperMC";
     }
 
     @Override

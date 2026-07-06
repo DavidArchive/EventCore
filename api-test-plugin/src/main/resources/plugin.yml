@@ -1,0 +1,7 @@
+name: EventCoreAPITestPlugin
+version: ${version}
+api-version: 1.21
+main: me.david.apitestplugin.EventCoreAPITestPlugin
+author: VertrauterDavid, JavaMio
+description: Compile and runtime smoke test plugin for the EventCore API.
+depend: [EventCore]

@@ -13,15 +13,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Getter
-public class KitManager {
-
-    // Mio - All of these changes can be seen as a temporary fix – the plan for the future is still to rewrite the entire class.
+public class KitManager implements me.david.api.manager.KitManager {
 
     private final Logger LOGGER = Logger.getLogger("KitManager");
 
@@ -41,7 +42,7 @@ public class KitManager {
         if (kitGiveEvent.isCancelled()) return;
 
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
 
         for (Map.Entry<Integer, ItemStack> entry : kitItems.entrySet()) {
             player.getInventory().setItem(entry.getKey(), entry.getValue());
@@ -62,11 +63,19 @@ public class KitManager {
 
             final Map<Integer, ItemStack> map = new ConcurrentHashMap<>();
             for (String key : kitSection.getKeys(false)) {
+                final int slot;
                 try {
-                    int slot = Integer.parseInt(key);
-                    ItemStack item = kitSection.getItemStack(key);
+                    slot = Integer.parseInt(key);
+                } catch (NumberFormatException ignored) {
+                    continue;
+                }
+
+                try {
+                    final ItemStack item = readItem(kitSection, key);
                     if (item != null) map.put(slot, item.clone());
-                } catch (NumberFormatException ignored) {}
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "[KitManager] Failed to load slot " + key + " of kit " + kitName, e);
+                }
             }
             kits.put(kitName, map);
         }
@@ -82,13 +91,13 @@ public class KitManager {
             final FileConfiguration config = EventCore.getInstance().getConfig();
             final ConfigurationSection kitSection = config.createSection("Kits.Kits." + kit);
 
-            Map<Integer, ItemStack> cacheMap = new ConcurrentHashMap<>();
+            final Map<Integer, ItemStack> cacheMap = new ConcurrentHashMap<>();
             for (int i = 0; i < 41; i++) {
-                ItemStack item = player.getInventory().getItem(i);
-                if (item != null) {
-                    kitSection.set(String.valueOf(i), item);
-                    cacheMap.put(i, item.clone());
-                }
+                final ItemStack item = player.getInventory().getItem(i);
+                if (item == null) continue;
+
+                kitSection.set(String.valueOf(i), Base64.getEncoder().encodeToString(item.serializeAsBytes()));
+                cacheMap.put(i, item.clone());
             }
 
             kits.put(kit, cacheMap);
@@ -97,7 +106,7 @@ public class KitManager {
             player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§aKit saved successfully!")));
         } catch (Exception e) {
             player.sendMessage(MessageUtil.getPrefix().append(MessageUtil.translateColorCodes("§cFailed to save kit!")));
-            LOGGER.warning("[KitManager] Failed to save kit: " + kit + " :" + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -127,5 +136,13 @@ public class KitManager {
         kits.remove(kit);
         EventCore.getInstance().getConfig().set("Kits.Kits." + kit, null);
         EventCore.getInstance().saveConfig();
+    }
+
+    private @Nullable ItemStack readItem(@NotNull final ConfigurationSection kitSection, @NotNull final String key) {
+        if (kitSection.isString(key)) {
+            final byte[] bytes = Base64.getDecoder().decode(kitSection.getString(key));
+            return ItemStack.deserializeBytes(bytes);
+        }
+        return kitSection.getItemStack(key);
     }
 }

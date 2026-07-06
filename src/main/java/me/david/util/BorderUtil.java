@@ -1,19 +1,21 @@
 package me.david.util;
 
 import me.david.EventCore;
+import me.david.util.folia.FoliaScheduler;
 
 public class BorderUtil implements Runnable {
 
-    public static int borderDefault = 200;
-    public static double borderDamageBuffer = 0.0;
-    public static double borderDamageAmount = 0.2;
-    public static int lastOptimal = borderDefault;
-    public static boolean autoBorder = EventCore.getInstance().getConfig().getBoolean("Settings.WorldBorder.AutoBorder", false);
+    public static volatile int borderDefault = 200;
+    public static volatile double borderDamageBuffer = 0.0;
+    public static volatile double borderDamageAmount = 0.2;
+    public static volatile int lastOptimal = borderDefault;
+    public static volatile boolean autoBorder;
 
     public BorderUtil() {
         borderDefault = EventCore.getInstance().getConfig().getInt("Settings.WorldBorder.DefaultSize", borderDefault);
         borderDamageBuffer = EventCore.getInstance().getConfig().getDouble("Settings.WorldBorder.Damage.Buffer", borderDamageBuffer);
         borderDamageAmount = EventCore.getInstance().getConfig().getDouble("Settings.WorldBorder.Damage.Amount", borderDamageAmount);
+        autoBorder = EventCore.getInstance().getConfig().getBoolean("Settings.WorldBorder.AutoBorder", false);
         lastOptimal = borderDefault;
     }
 
@@ -31,7 +33,7 @@ public class BorderUtil implements Runnable {
             int optimal = getOptimalSize();
             if (lastOptimal > optimal) {
                 lastOptimal = optimal;
-                Scheduler.runSync(() -> EventCore.getInstance().getMapManager().getSpawnLocation().getWorld().getWorldBorder().setSize(optimal, (long) (current - optimal)));
+                FoliaScheduler.getGlobalRegionScheduler().execute(EventCore.getInstance(), () -> EventCore.getInstance().getMapManager().getSpawnLocation().getWorld().getWorldBorder().changeSize(optimal, (long) (current - optimal) * 20));
             }
         }
     }

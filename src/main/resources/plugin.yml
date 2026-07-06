@@ -3,7 +3,8 @@ version: ${version}
 api-version: 1.21
 main: me.david.EventCore
 author: VertrauterDavid, JavaMio
+load: POSTWORLD
 website: https://github.com/DavidArchive/EventCore
-folia-supported: true
+canvas-supported: true
 softdepend: [PlaceholderAPI]
 depend: [WorldEdit]

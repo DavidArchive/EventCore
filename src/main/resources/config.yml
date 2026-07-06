@@ -15,6 +15,7 @@
 # ---------------------------------------------------------------------------
 
 Settings:
+  Metrics: true # Enable or disable the metrics system - https://bstats.org/
   SpawnLocation: 'world/0/200/0' # Change the setting only with '/event setSpawn'
   MaxBuildHeight: 300 # Maximum build height
   DisableFallDamage: true # Disable fall damage
@@ -22,6 +23,10 @@ Settings:
   Updates:
     NotifyOnJoin: true
     LogInConsole: false
+  PlayerJoin:
+    Commands: [] # Commands executed by the console when a player joins, leave empty to disable. %player% is replaced with the player's name
+  PlayerQuit:
+    Commands: [] # Commands executed by the console when a player leaves, leave empty to disable. %player% is replaced with the player's name
   HostRank:
     Enabled: false
     Permission: "event.host" # Permission which is required to receive the host rank upon Join

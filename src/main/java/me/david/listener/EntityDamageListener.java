@@ -29,7 +29,7 @@ public class EntityDamageListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (EventCore.getInstance().getConfig().getBoolean("Settings.WorldBorder.Boost.Enabled")) {
-            if (event.getCause() == EntityDamageByEntityEvent.DamageCause.SUFFOCATION) {
+            if (event.getCause() == EntityDamageEvent.DamageCause.WORLD_BORDER) {
                 World world = player.getWorld();
                 WorldBorder worldBorder = world.getWorldBorder();
                 if (!(worldBorder.isInside(player.getLocation()))) {

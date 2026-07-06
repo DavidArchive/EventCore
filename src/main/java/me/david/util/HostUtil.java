@@ -2,6 +2,7 @@ package me.david.util;
 
 import lombok.experimental.UtilityClass;
 import me.david.EventCore;
+import me.david.util.folia.FoliaScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class HostUtil {
         if (EventCore.getInstance().getConfig().getBoolean("Settings.HostRank.Enabled") && host.isEmpty()) {
             if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host"))) {
                 String command = Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.JoinCommand").replaceAll("%player%", player.getName()), "event.host");
-                Scheduler.dispatchCommand(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+                FoliaScheduler.getGlobalRegionScheduler().execute(EventCore.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
             }
             host.add(player);
         }
@@ -31,7 +32,7 @@ public class HostUtil {
     public void removeHost(final @NotNull Player player) {
         if (EventCore.getInstance().getConfig().getBoolean("Settings.HostRank.Enabled")) {
             if (player.hasPermission(Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.Permission"),"event.host")) && isHost(player)) {
-                Scheduler.dispatchCommand(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.QuitCommand").replaceAll("%player%", player.getName()), "event.host")));
+                FoliaScheduler.getGlobalRegionScheduler().execute(EventCore.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(EventCore.getInstance().getConfig().getString("Settings.HostRank.QuitCommand").replaceAll("%player%", player.getName()), "event.host")));
             }
             host.remove(player);
         }

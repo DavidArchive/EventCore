@@ -59,7 +59,6 @@ public final class PlaceholderHook extends PlaceholderExpansion {
     public @NotNull String onPlaceholderRequest(final Player player, final @NotNull String params) {
         if (player == null) return "";
 
-        // I'm personally not a huge fan of switch & case, but in this case, it looks way better </3
         return switch (params) {
             case "total" -> String.valueOf(PlayerUtil.getTotal());
             case "alive" -> String.valueOf(PlayerUtil.getAlive());
