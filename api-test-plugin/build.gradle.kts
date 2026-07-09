@@ -24,6 +24,9 @@ repositories {
 }
 
 dependencies {
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+
     compileOnly(project(":api"))
     compileOnly(libs.canvas.api)
 }
